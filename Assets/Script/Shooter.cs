@@ -13,24 +13,15 @@ public class Shooter : MonoBehaviour
     public float Gravity = 5f;
     public LineRenderer LineRender;
 
-    public GameObject[] Path;
     void Start()
     {
         //! Get the mouse position and calculate the velocity accorting to it
         //! Calculate the end position from starting position and velocity
         //! Interpolate between the two position by the resolution amount to get intermediate positions
         //! instantiate simple spheres the amount of the resolution and assign their position to the intermediatory positions
-        StartingPossition = gameObject.transform.position;
-        Path = new GameObject[Length];
+
         Physics.gravity = new Vector3(0, -Gravity, 0);
 
-        for (int i = 0; i < Path.Length; i++)
-        {
-
-            GameObject obj = Instantiate(Ball, StartingPossition, Quaternion.identity);
-            obj.SetActive(false);
-            Path[i] = obj;
-        }
 
 
 
@@ -41,12 +32,9 @@ public class Shooter : MonoBehaviour
     void Update()
     {
 
-        LineRender.positionCount = Length;
+
 
         StartingPossition = gameObject.transform.position;
-
-
-        //InitialVelocity = Vector3.zero * 0.1.1f;
 
         if (Input.GetKey(KeyCode.LeftArrow))
         {
@@ -58,18 +46,31 @@ public class Shooter : MonoBehaviour
             InitialVelocity += Vector3.right * 1.1f;
         }
 
-        if (Input.GetKey(KeyCode.UpArrow))
+        if (Input.GetKey(KeyCode.UpArrow) && (InitialVelocity.y <= 80f || InitialVelocity.z <= 120f))
         {
             InitialVelocity += Vector3.forward * 1.6f;
             InitialVelocity += Vector3.up * 1f;
+            //TODO: Increase the length according to z and y
+            //! Length max 20
+            if (InitialVelocity.y % 9 == 0)
+                Length += 2;
+
         }
 
         if (Input.GetKey(KeyCode.DownArrow))
         {
             InitialVelocity += Vector3.back * 1.6f;
             InitialVelocity += Vector3.down * 1f;
+
+            if (InitialVelocity.y % 9 == 0)
+                Length -= 2;
+
         }
 
+        if (Input.GetKey(KeyCode.C))
+        {
+            Length += 1;
+        }
 
 
         if (Input.GetKeyDown(KeyCode.Space))
@@ -79,14 +80,14 @@ public class Shooter : MonoBehaviour
             obj.GetComponent<Rigidbody>().AddForce(InitialVelocity, ForceMode.Impulse);
         }
 
-        Trajectory(ref Path);
-        // Plot(StartingPossition, InitialVelocity, Length, ref Path);
+        Trajectory();
 
 
     }
 
-    private void Trajectory(ref GameObject[] path)
+    private void Trajectory()
     {
+        LineRender.positionCount = Length;
         Vector3 prevPos = StartingPossition;
         // InitialVelocity *= 4f;
         float ty = InitialVelocity.y;
@@ -96,45 +97,14 @@ public class Shooter : MonoBehaviour
             Vector3 nextPos = prevPos + Vector3.up * (ty / Resolution);
             nextPos.x += (InitialVelocity.x / Resolution);
             nextPos.z += (InitialVelocity.z / Resolution);
-            prevPos = nextPos;
-            // path[i].transform.position = nextPos;
-            ty -= Gravity;
             LineRender.SetPosition(i, prevPos);
-            //    Debug.Log(prevPos);
-        }
-
-
-        //  DrawPath(ref path);
-    }
-
-    private void DrawPath(ref GameObject[] path)
-    {
-        for (int i = 0; i < Mathf.Abs(StartingPossition.z - InitialVelocity.z) / 10; i++)
-        {
-            path[i].SetActive(true);
-        }
-
-    }
-
-    private void Plot(Vector3 pos, Vector3 velocity, int length, ref GameObject[] path)
-    {
-
-
-        float timestep = Time.fixedDeltaTime / Physics.defaultSolverVelocityIterations;
-        Vector3 gravityAccel = Physics.gravity * 1 * timestep * timestep;
-        float drag = 1f - timestep * 0;
-        Vector3 moveStep = velocity * timestep;
-
-        for (int i = 0; i < length; ++i)
-        {
-            moveStep += gravityAccel;
-            moveStep *= drag;
-            pos += moveStep;
-            path[i].transform.position = pos;
+            prevPos = nextPos;
+            ty -= Gravity;
 
         }
-
-        DrawPath(ref path);
     }
+
+
+
 
 }

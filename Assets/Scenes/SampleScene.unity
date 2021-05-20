@@ -155,12 +155,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Ball: {fileID: 7042615178720274979, guid: 90fae5c905faab743905376a2f3553e5, type: 3}
   StartingPossition: {x: 0, y: 0, z: 0}
-  InitialVelocity: {x: 10, y: 10, z: 10}
+  InitialVelocity: {x: 0, y: 0, z: 0}
   Resolution: 15
-  Length: 10
-  Gravity: 9.29
+  Length: 2
+  Gravity: 8.15
   LineRender: {fileID: 109409620}
-  Path: []
 --- !u!4 &109409619
 Transform:
   m_ObjectHideFlags: 0
