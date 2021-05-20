@@ -4,38 +4,45 @@ using UnityEngine;
 
 public class Shooter : MonoBehaviour
 {
-    // Start is called before the first frame update
-    public GameObject Ball;
-    public Vector3 StartingPossition;
-    public Vector3 InitialVelocity;
-    public int Resolution = 10;
-    public int Length = 10;
-    public float Gravity = 5f;
-    public LineRenderer LineRender;
+    // Ball object that the player avatar throw
+    [SerializeField]
+    private GameObject Ball;
+    // Start position of the trajectory which is the player position
+    [SerializeField]
+    private Vector3 StartingPossition;
+    // The initial velocity of the ball that is used for calculating the trajectory
+    [SerializeField]
+    private Vector3 InitialVelocity;
 
-    void Start()
+    // Determines the smoothness of the trajectory line. THe higher the count the smoother the line
+    [SerializeField]
+    private int Resolution = 10;
+
+    // length of the trajectory line
+    [SerializeField]
+    private int Length = 10;
+
+    // The gravity constant used for calculating the trajectory and used by all the physic objects
+    [SerializeField]
+    private float Gravity = 5f;
+
+    // Line renderer object that draws the trajectory
+    [SerializeField]
+    private LineRenderer LineRender;
+
+    void Awake()
     {
-        //! Get the mouse position and calculate the velocity accorting to it
-        //! Calculate the end position from starting position and velocity
-        //! Interpolate between the two position by the resolution amount to get intermediate positions
-        //! instantiate simple spheres the amount of the resolution and assign their position to the intermediatory positions
-
+        // Set the global gravity to the Gravity variable
         Physics.gravity = new Vector3(0, -Gravity, 0);
-
-
-
-
-
     }
 
     // Update is called once per frame
     void Update()
     {
-
-
-
+        // Set the StartingPossition to the current position of the player
         StartingPossition = gameObject.transform.position;
 
+        //! For testing
         if (Input.GetKey(KeyCode.LeftArrow))
         {
             InitialVelocity += Vector3.left * 1.1f;
@@ -76,9 +83,9 @@ public class Shooter : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space))
         {
             GameObject obj = Instantiate(Ball, StartingPossition, Quaternion.identity);
-            obj.GetComponent<Rigidbody>().isKinematic = false;
             obj.GetComponent<Rigidbody>().AddForce(InitialVelocity, ForceMode.Impulse);
         }
+        //! For testing
 
         Trajectory();
 
@@ -87,24 +94,24 @@ public class Shooter : MonoBehaviour
 
     private void Trajectory()
     {
+        // Set the vertices count of the linerenderer to the length of the path
         LineRender.positionCount = Length;
         Vector3 prevPos = StartingPossition;
-        // InitialVelocity *= 4f;
         float ty = InitialVelocity.y;
 
         for (int i = 0; i < Length; i++)
         {
+            // Calculate the trajectory of the Ball, by diving the result by Resolution we get a smooth curves
             Vector3 nextPos = prevPos + Vector3.up * (ty / Resolution);
             nextPos.x += (InitialVelocity.x / Resolution);
             nextPos.z += (InitialVelocity.z / Resolution);
+            // Set the position of the vertices of the linerenderer
             LineRender.SetPosition(i, prevPos);
             prevPos = nextPos;
+            // Apply gravity
             ty -= Gravity;
 
         }
     }
-
-
-
 
 }
