@@ -47,6 +47,7 @@ public class Shooter : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        _startingPosition = transform.position;
         if (Input.touches.Length > 0)
         {
             Touch t = Input.GetTouch(0);
@@ -54,6 +55,10 @@ public class Shooter : MonoBehaviour
             if (t.phase == TouchPhase.Began)
             {
                 _firstPressPos = new Vector2(t.position.x, t.position.y);
+            }
+            else if (t.phase == TouchPhase.Ended)
+            {
+                Shoot();
             }
 
 
@@ -73,25 +78,33 @@ public class Shooter : MonoBehaviour
 
                 if (_currentSwipe.y > 0 && _currentSwipe.x > -0.5f && _currentSwipe.x < 0.5f)
                 {
-                    swipeDirection = Swipe.Down;
+                    _initialVelocity += Vector3.back * 1.6f;
+                    _initialVelocity += Vector3.down * 1f;
+
+                    if (_initialVelocity.y % 9 == 0 && _length > 0)
+                    {
+                        _length -= 2;
+                    }
                 }
-                else if (_currentSwipe.y < 0 && _currentSwipe.x > -0.5f && _currentSwipe.x < 0.5f)
+                if (_currentSwipe.y < 0 && _currentSwipe.x > -0.5f && _currentSwipe.x < 0.5f)
                 {
-                    swipeDirection = Swipe.Up;
+                    _initialVelocity += Vector3.forward * 1.6f;
+                    _initialVelocity += Vector3.up * 1f;
+                    if (_initialVelocity.y % 9 == 0 && _length <= 20)
+                    {
+                        _length += 2;
+                    }
                 }
-                else if (_currentSwipe.x < 0 && _currentSwipe.y > -0.5f && _currentSwipe.y < 0.5f)
+                if (_currentSwipe.x < 0 && _currentSwipe.y > -0.5f && _currentSwipe.y < 0.5f)
                 {
-                    swipeDirection = Swipe.Left;
+                    _initialVelocity += Vector3.left * 1.3f;
                 }
-                else if (_currentSwipe.x > 0 && _currentSwipe.y > -0.5f && _currentSwipe.y < 0.5f)
+                if (_currentSwipe.x > 0 && _currentSwipe.y > -0.5f && _currentSwipe.y < 0.5f)
                 {
-                    swipeDirection = Swipe.Right;
+                    _initialVelocity += Vector3.right * 1.3f;
                 }
 
-                if (t.phase == TouchPhase.Ended)
-                {
-                    Shoot();
-                }
+
             }
         }
         else
@@ -100,38 +113,16 @@ public class Shooter : MonoBehaviour
 
         }
 
-        if (swipeDirection == Swipe.Left)
-        {
-            _initialVelocity += Vector3.left * 1.1f;
-        }
-
-        if (swipeDirection == Swipe.Right)
-        {
-            _initialVelocity += Vector3.right * 1.1f;
-        }
 
         if (swipeDirection == Swipe.Up && (_initialVelocity.y <= 80f || _initialVelocity.z <= 120f))
         {
-            _initialVelocity += Vector3.forward * 1.6f;
-            _initialVelocity += Vector3.up * 1f;
-            //TODO: Increase the length according to z and y
-            //! Length max 20
-            if (_initialVelocity.y % 9 == 0 && _length <= 20)
-            {
-                _length += 2;
-            }
+
 
         }
 
         if (swipeDirection == Swipe.Down && (_initialVelocity.y >= 0 || _initialVelocity.z >= 0))
         {
-            _initialVelocity += Vector3.back * 1.6f;
-            _initialVelocity += Vector3.down * 1f;
 
-            if (_initialVelocity.y % 9 == 0 && _length > 0)
-            {
-                _length -= 2;
-            }
 
         }
 
