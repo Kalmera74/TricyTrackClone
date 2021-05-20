@@ -6,6 +6,8 @@ public class PlayerController : MonoBehaviour
 {
     [SerializeField]
     private float _speed = 2f;
+    [SerializeField]
+    private bool _didHit = false;
     void Start()
     {
 
@@ -14,6 +16,13 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.Translate(Vector3.forward * Time.deltaTime * _speed);
+        if (!_didHit)
+            transform.Translate(Vector3.forward * Time.deltaTime * _speed);
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Door"))
+            _didHit = true;
     }
 }

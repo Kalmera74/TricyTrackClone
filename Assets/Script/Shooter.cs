@@ -35,9 +35,9 @@ public class Shooter : MonoBehaviour
     private Vector2 _firstPressPos;
     private Vector2 _secondPressPos;
     private Vector2 _currentSwipe;
-    private enum Swipe { None, Up, Down, Left, Right };
+    public enum Swipe { None, Up, Down, Left, Right };
 
-    private static Swipe swipeDirection;
+    public static Swipe swipeDirection;
     void Awake()
     {
         // Set the global gravity to the Gravity variable
