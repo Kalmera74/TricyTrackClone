@@ -2,11 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ObstacleB : MonoBehaviour, IObstacle
+public class ObstacleB : Obstacles
 {
-    public void Activate()
+
+    public override void Activate(PlayerController player)
     {
         throw new System.NotImplementedException();
     }
-
 }

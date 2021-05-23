@@ -6,6 +6,8 @@ TagManager:
   tags:
   - Bullseye
   - Door
+  - Ball
+  - Obstacle
   layers:
   - Default
   - TransparentFX

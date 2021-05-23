@@ -78,22 +78,29 @@ public class Shooter : MonoBehaviour
 
                 if (_currentSwipe.y > 0 && _currentSwipe.x > -0.5f && _currentSwipe.x < 0.5f)
                 {
-                    _initialVelocity += Vector3.back * 1.6f;
-                    _initialVelocity += Vector3.down * 1f;
-
-                    if (_initialVelocity.y % 9 == 0 && _length > 0)
+                    if (_initialVelocity.y <= 25f || _initialVelocity.z <= 40f)
                     {
-                        _length -= 2;
+                        _initialVelocity += Vector3.forward * 1.6f;
+                        _initialVelocity += Vector3.up * 1f;
+                        if (_initialVelocity.y % 7 == 0 && _length <= 20)
+                        {
+                            _length += 2;
+                        }
                     }
                 }
                 if (_currentSwipe.y < 0 && _currentSwipe.x > -0.5f && _currentSwipe.x < 0.5f)
                 {
-                    _initialVelocity += Vector3.forward * 1.6f;
-                    _initialVelocity += Vector3.up * 1f;
-                    if (_initialVelocity.y % 9 == 0 && _length <= 20)
+                    if (_initialVelocity.y >= 0 || _initialVelocity.z >= 0)
                     {
-                        _length += 2;
+                        _initialVelocity += Vector3.back * 1.6f;
+                        _initialVelocity += Vector3.down * 1f;
+
+                        if (_initialVelocity.y % 7 == 0 && _length > 0)
+                        {
+                            _length -= 2;
+                        }
                     }
+
                 }
                 if (_currentSwipe.x < 0 && _currentSwipe.y > -0.5f && _currentSwipe.y < 0.5f)
                 {
@@ -106,6 +113,7 @@ public class Shooter : MonoBehaviour
 
 
             }
+            Trajectory();
         }
         else
         {
@@ -114,19 +122,6 @@ public class Shooter : MonoBehaviour
         }
 
 
-        if (swipeDirection == Swipe.Up && (_initialVelocity.y <= 80f || _initialVelocity.z <= 120f))
-        {
-
-
-        }
-
-        if (swipeDirection == Swipe.Down && (_initialVelocity.y >= 0 || _initialVelocity.z >= 0))
-        {
-
-
-        }
-
-        Trajectory();
 
     }
 

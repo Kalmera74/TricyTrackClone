@@ -2,17 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ObstacleA : MonoBehaviour, IObstacle
+public class ObstacleA : Obstacles
 {
-    public GameObject Door;
     private bool _isActivated = false;
-    public ObstacleA()
-    {
-        Door = GameObject.FindGameObjectWithTag("Door");
-    }
+
 
     //! Implement IObstacle method, Move the door object up or down depending on its current state when it gets hit
-    public void Activate()
+    public override void Activate(PlayerController Player)
     {
         if (!_isActivated)
         {
@@ -28,6 +24,7 @@ public class ObstacleA : MonoBehaviour, IObstacle
 
         }
 
+        SetPlayerCondition(Player);
     }
 
 }

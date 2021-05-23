@@ -1,6 +1,11 @@
-
+using UnityEngine;
 public interface IObstacle
 {
-    void Activate();
+    // * Using Interface allows us to easy add and remove obstacle behaviours, when we need a new behaviour we can just implement IObstacle
+
+    void Activate(PlayerController player);
+    void SetDoor(GameObject door);
+
+
 }
 

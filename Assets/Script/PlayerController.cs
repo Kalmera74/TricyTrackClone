@@ -8,21 +8,37 @@ public class PlayerController : MonoBehaviour
     private float _speed = 2f;
     [SerializeField]
     private bool _didHit = false;
+
+    private Rigidbody body;
     void Start()
     {
-
+        body = GetComponent<Rigidbody>();
+        body.AddForce(Vector3.forward * _speed, ForceMode.Impulse);
     }
 
-    // Update is called once per frame
-    void Update()
+    public void SetCondition()
     {
-        if (!_didHit)
-            transform.Translate(Vector3.forward * Time.deltaTime * _speed);
+
+        SetDrag(0f);
+        body.AddForce(Vector3.forward * _speed, ForceMode.Impulse);
+
     }
+
+    private void SetDrag(float drag)
+    {
+        body.drag = drag;
+    }
+    // Update is called once per frame
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Door"))
-            _didHit = true;
+        {
+            //transform.Translate(Vector3.back * 2f);
+            SetDrag(2f);
+            body.AddForce(Vector3.back * _speed * 2f, ForceMode.Impulse);
+
+        }
+
     }
 }
