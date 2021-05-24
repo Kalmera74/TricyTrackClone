@@ -78,7 +78,7 @@ public class Shooter : MonoBehaviour
 
                 if (_currentSwipe.y > 0 && _currentSwipe.x > -0.5f && _currentSwipe.x < 0.5f)
                 {
-                    if (_initialVelocity.y <= 25f || _initialVelocity.z <= 40f)
+                    if (_initialVelocity.y <= 45f || _initialVelocity.z <= 40f)
                     {
                         _initialVelocity += Vector3.forward * 1.6f;
                         _initialVelocity += Vector3.up * 1f;

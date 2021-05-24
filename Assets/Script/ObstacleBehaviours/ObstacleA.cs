@@ -8,7 +8,7 @@ public class ObstacleA : Obstacles
 
 
     //! Implement IObstacle method, Move the door object up or down depending on its current state when it gets hit
-    public override void Activate(PlayerController Player)
+    public override void Activate(BaseController Player)
     {
         if (!_isActivated)
         {

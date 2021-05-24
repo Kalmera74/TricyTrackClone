@@ -7,7 +7,8 @@ public abstract class Obstacles : MonoBehaviour, IObstacle
     // * With this abstract class implementing IObstacle we collect the obstacles with similar behaviour and functions (eg. activate a door, and effect player) together
     // * and ensure SOLID and DRY
     public GameObject Door;
-    public abstract void Activate(PlayerController player);
+    public abstract void Activate(BaseController player);
+
 
     public void SetDoor(GameObject door)
     {
@@ -16,7 +17,7 @@ public abstract class Obstacles : MonoBehaviour, IObstacle
         Door = door;
     }
 
-    public void SetPlayerCondition(PlayerController player)
+    public void SetPlayerCondition(BaseController player)
     {
         if (player == null) throw new MissingReferenceException();
 

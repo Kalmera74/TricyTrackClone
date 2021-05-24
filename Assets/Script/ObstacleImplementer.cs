@@ -4,7 +4,7 @@ using UnityEngine;
 public class ObstacleImplementer : MonoBehaviour
 {
 
-    public PlayerController Player;
+    public BaseController Player;
     private IObstacle ObstacleBehaviour;
 
     // With this type we get the related class from the factory
@@ -16,12 +16,12 @@ public class ObstacleImplementer : MonoBehaviour
         //! Therefore, it's not the best solution but it still gives more flexibility and reduce coupling 
 
         ObstacleBehaviour = ObstacleFactory.GetObstacle(ObstacleType);
-        ObstacleBehaviour.SetDoor(GetDoor("Door"));
+        ObstacleBehaviour.SetDoor(GetChildrenWithTag("Door"));
         Player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
 
     }
 
-    public GameObject GetDoor(string tag)
+    public GameObject GetChildrenWithTag(string tag)
     {
         foreach (Transform child in transform)
         {
@@ -35,6 +35,7 @@ public class ObstacleImplementer : MonoBehaviour
         return null;
 
     }
+
     void OnCollisionEnter(Collision collision)
     {
         Collider myCollider = collision.contacts[0].thisCollider;
