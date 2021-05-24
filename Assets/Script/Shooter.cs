@@ -44,9 +44,18 @@ public class Shooter : MonoBehaviour
         Physics.gravity = new Vector3(0, -_gravity, 0);
     }
 
+    public void SetInitialVelocity(Vector3 velocity)
+    {
+        _initialVelocity = velocity;
+    }
+
+
     // Update is called once per frame
     void Update()
     {
+        // TODO: Should refractore this whole class. It's too messy and hard to change anything here.
+        //! Shouldn't do this
+        if (!gameObject.CompareTag("Player")) return;
         _startingPosition = transform.position;
         if (Input.touches.Length > 0)
         {
@@ -59,6 +68,7 @@ public class Shooter : MonoBehaviour
             else if (t.phase == TouchPhase.Ended)
             {
                 Shoot();
+                ResetPath();
             }
 
 
@@ -133,12 +143,12 @@ public class Shooter : MonoBehaviour
 
     }
 
-    private void Shoot()
+    public void Shoot()
     {
-
+        // TODO: Refractor this to use Object Pooling instead
         GameObject obj = Instantiate(_ball, _startingPosition, Quaternion.identity);
         obj.GetComponent<Rigidbody>().AddForce(_initialVelocity, ForceMode.Impulse);
-        ResetPath();
+        obj.GetComponent<Bullet>().Owner = GetComponent<BaseController>();
         Destroy(obj, 5f);
 
     }

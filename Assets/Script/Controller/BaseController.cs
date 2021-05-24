@@ -2,8 +2,8 @@ using UnityEngine;
 
 public abstract class BaseController : MonoBehaviour
 {
-    public float Acceleration = 2f;
-    public float Deceleration = 2f;
+    public float Acceleration = 3f;
+    public float Deceleration = 3f;
 
     private bool _hasStopped = true;
 

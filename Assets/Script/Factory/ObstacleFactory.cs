@@ -9,8 +9,8 @@ public static class ObstacleFactory
     {
         switch (type)
         {
-            case ObstacleType.A: return new ObstacleA(); break;
-            case ObstacleType.B: return new ObstacleB(); break;
+            case ObstacleType.A: return new ObstacleA();
+            case ObstacleType.B: return new ObstacleB();
             default: return null;
         }
     }

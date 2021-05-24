@@ -4,7 +4,8 @@ using UnityEngine;
 public class ObstacleImplementer : MonoBehaviour
 {
 
-    public BaseController Player;
+    private BaseController _player;
+    private BaseController _enemy;
     private IObstacle ObstacleBehaviour;
 
     // With this type we get the related class from the factory
@@ -17,7 +18,8 @@ public class ObstacleImplementer : MonoBehaviour
 
         ObstacleBehaviour = ObstacleFactory.GetObstacle(ObstacleType);
         ObstacleBehaviour.SetDoor(GetChildrenWithTag("Door"));
-        Player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
+        _player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
+        _enemy = GameObject.FindGameObjectWithTag("Enemy").GetComponent<EnemyController>();
 
     }
 
@@ -38,12 +40,16 @@ public class ObstacleImplementer : MonoBehaviour
 
     void OnCollisionEnter(Collision collision)
     {
+        // Get the child that has been hit bit either the Ball, the Player, or the Enemy
         Collider myCollider = collision.contacts[0].thisCollider;
-        Destroy(collision.collider.gameObject);
+        // Check is the thing that hit the child is Ball, if so destroy it
+        if (collision.collider.CompareTag("Ball")) Destroy(collision.collider.gameObject);
+
+
 
         if (myCollider.CompareTag("Bullseye"))
         {
-            ObstacleBehaviour.Activate(Player);
+            ObstacleBehaviour.Activate(collision.collider.GetComponent<Bullet>().Owner);
         }
 
     }

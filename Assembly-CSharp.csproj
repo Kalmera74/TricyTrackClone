@@ -45,6 +45,8 @@
      <Compile Include="Assets\Script\Obstacles.cs" />
      <Compile Include="Assets\Script\Controller\PlayerController.cs" />
      <Compile Include="Assets\Script\Controller\BaseController.cs" />
+     <Compile Include="Assets\Script\Controller\EnemyController.cs" />
+     <Compile Include="Assets\Script\Bullet.cs" />
     <Reference Include="UnityEngine">
         <HintPath>C:/Program Files/2020.3.8f1/Editor/Data/Managed/UnityEngine/UnityEngine.dll</HintPath>
     </Reference>
