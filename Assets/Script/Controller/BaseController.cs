@@ -2,17 +2,27 @@ using UnityEngine;
 
 public abstract class BaseController : MonoBehaviour
 {
-    public float Acceleration = 3f;
-    public float Deceleration = 3f;
+    [SerializeField]
+    protected float Acceleration = 3f;
+
+    [SerializeField]
+    protected float Deceleration = 3f;
 
     private bool _hasStopped = true;
 
     private Rigidbody _body;
 
+    protected Shooter _shooter;
     public void ToggleStop()
     {
         _hasStopped = !_hasStopped;
     }
+
+    protected void SetShooter()
+    {
+        _shooter = GetComponent<Shooter>();
+    }
+
     public void SetCondition()
     {
         if (_hasStopped)
@@ -41,8 +51,8 @@ public abstract class BaseController : MonoBehaviour
     {
         _body.drag = drag;
     }
-    protected void SetBody(Rigidbody body)
+    protected void SetBody()
     {
-        _body = body;
+        _body = GetComponent<Rigidbody>();
     }
 }

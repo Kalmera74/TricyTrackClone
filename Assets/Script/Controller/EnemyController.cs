@@ -4,13 +4,11 @@ using UnityEngine;
 
 public class EnemyController : BaseController
 {
-    private Shooter _shooter;
-
 
     void Start()
     {
-        _shooter = GetComponent<Shooter>();
-        SetBody(GetComponent<Rigidbody>());
+        SetBody();
+        SetShooter();
 
         Accelerate();
     }

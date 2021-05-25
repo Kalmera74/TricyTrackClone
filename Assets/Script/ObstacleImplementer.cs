@@ -8,6 +8,9 @@ public class ObstacleImplementer : MonoBehaviour
     private BaseController _enemy;
     private IObstacle ObstacleBehaviour;
 
+    public string TargetTag = "Bullseye";
+    public string DoorTag = "Door";
+
     // With this type we get the related class from the factory
     public ObstacleFactory.ObstacleType ObstacleType;
 
@@ -17,7 +20,7 @@ public class ObstacleImplementer : MonoBehaviour
         //! Therefore, it's not the best solution but it still gives more flexibility and reduce coupling 
 
         ObstacleBehaviour = ObstacleFactory.GetObstacle(ObstacleType);
-        ObstacleBehaviour.SetDoor(GetChildrenWithTag("Door"));
+        ObstacleBehaviour.SetDoor(GetChildrenWithTag(DoorTag));
         _player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
         _enemy = GameObject.FindGameObjectWithTag("Enemy").GetComponent<EnemyController>();
 
@@ -47,7 +50,7 @@ public class ObstacleImplementer : MonoBehaviour
 
 
 
-        if (myCollider.CompareTag("Bullseye"))
+        if (myCollider.CompareTag(TargetTag))
         {
             ObstacleBehaviour.Activate(collision.collider.GetComponent<Bullet>().Owner);
         }

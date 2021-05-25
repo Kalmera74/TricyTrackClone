@@ -35,9 +35,14 @@ public class Shooter : MonoBehaviour
     private Vector2 _firstPressPos;
     private Vector2 _secondPressPos;
     private Vector2 _currentSwipe;
-    public enum Swipe { None, Up, Down, Left, Right };
+    public bool DidEnterFinishLine { set; get; } = false;
+    private bool _canShoot { get; set; } = true;
 
-    public static Swipe swipeDirection;
+    [SerializeField]
+    private float _timer = 1f;
+    [SerializeField]
+    private float _cooldown = .7f;
+
     void Awake()
     {
         // Set the global gravity to the Gravity variable
@@ -64,6 +69,7 @@ public class Shooter : MonoBehaviour
             if (t.phase == TouchPhase.Began)
             {
                 _firstPressPos = new Vector2(t.position.x, t.position.y);
+
             }
             else if (t.phase == TouchPhase.Ended)
             {
@@ -78,11 +84,7 @@ public class Shooter : MonoBehaviour
                 _currentSwipe = new Vector3(_secondPressPos.x - _firstPressPos.x, _secondPressPos.y - _firstPressPos.y);
 
                 // Make sure it was a legit swipe, not a tap
-                if (_currentSwipe.magnitude < _minSwipeLength)
-                {
-                    swipeDirection = Swipe.None;
-                    return;
-                }
+                if (_currentSwipe.magnitude < _minSwipeLength) { return; }
 
                 _currentSwipe.Normalize();
 
@@ -123,16 +125,34 @@ public class Shooter : MonoBehaviour
 
 
             }
-            Trajectory();
+            CalculateTrajectory();
+
+            if (DidEnterFinishLine)
+            {
+                EndlessShooter();
+            }
         }
-        else
+
+
+
+    }
+
+    private void EndlessShooter()
+    {
+        _timer -= Time.deltaTime;
+        if (_timer <= _cooldown)
         {
-            swipeDirection = Swipe.None;
+            _timer = 1f;
+            _canShoot = true;
 
         }
+        else if (_canShoot)
+        {
+            _canShoot = false;
+            Shoot();
+            //     ResetPath();
 
-
-
+        }
     }
 
     private void ResetPath()
@@ -152,7 +172,7 @@ public class Shooter : MonoBehaviour
         Destroy(obj, 5f);
 
     }
-    private void Trajectory()
+    private void CalculateTrajectory()
     {
         // Set the vertices count of the linerenderer to the length of the path
         _lineRenderer.positionCount = _length;

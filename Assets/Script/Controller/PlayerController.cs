@@ -3,14 +3,38 @@ using UnityEngine;
 public class PlayerController : BaseController
 {
 
+    public Transform Camera;
     void Start()
     {
-        SetBody(GetComponent<Rigidbody>());
+        SetBody();
+        SetShooter();
 
         Accelerate();
     }
 
+    private void Loose()
+    {
+        Decelerate();
 
+    }
+
+    private void SetCameraForFinal()
+    {
+
+
+
+    }
+
+    private void Finish()
+    {
+
+    }
+
+    private void ShootEndlessly()
+    {
+        _shooter.DidEnterFinishLine = true;
+        SetCameraForFinal();
+    }
 
     // Update is called once per frame
 
@@ -18,10 +42,16 @@ public class PlayerController : BaseController
     {
         if (other.CompareTag("Door"))
         {
-            //transform.Translate(Vector3.back * 2f);
             Decelerate();
+        }
+        else if (other.CompareTag("FinDoor"))
+        {
+            Loose();
+        }
+        else if (other.CompareTag("FinalLine"))
+        {
 
-
+            ShootEndlessly();
         }
 
     }

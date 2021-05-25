@@ -10,17 +10,15 @@ public abstract class Obstacles : MonoBehaviour, IObstacle
     public abstract void Activate(BaseController player);
 
 
-    public void SetDoor(GameObject door)
+    public virtual void SetDoor(GameObject door)
     {
         if (Door != null) throw new MissingReferenceException();
-
         Door = door;
     }
 
     public void SetPlayerCondition(BaseController player)
     {
         if (player == null) throw new MissingReferenceException();
-
         player.SetCondition();
     }
 
